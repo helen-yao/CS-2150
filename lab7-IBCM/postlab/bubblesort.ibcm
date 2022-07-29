@@ -1,0 +1,101 @@
+C00E	000		jmp	start	skip around variables (CHANGE MEM)
+0000	001	i	dw	0	int i
+0065	002	ar	dw	0	int a[] (CHANGE MEM)
+0000	003	zero	dw	0
+0001	004	one	dw	1
+4000	005	storit	dw	4000
+000A	006	n	dw	10	array size
+0000	007
+0009	008	j	dw	0
+0000	009	value	dw	0
+3000	00A	loadit	dw	0
+0000	00B	temp	dw	0
+0000	00C	
+6000	00D	subit	dw	6000
+3006	00E	loop	load	n	loop to add values into array
+6001	00F		sub	i
+D01D	010		jumpe	xit	(CHANGE MEM)
+1000	011		readH		ask for value to put into array
+4009	012		store	value	
+3005	013		load	storit
+5001	014		add	i
+5002	015		add	ar
+4018	016		store		store into doit
+3009	017		load	value
+0000	018	doit	dw		helps store value
+3001	019		load	i
+5004	01A		add	one
+4001	01B		store	i
+C00E	01C		jmp		jump to beginning of loop
+3003	01D	xit	load	0	set i back to 0
+4001	01E		store	i
+3006	01F	loop	load	n	start of first loop of two nested
+6001	020		sub	i
+D055	021		jumpe		(CHANGE MEM)
+3001	022	loop	load	i	start of second loop
+6008	023		sub	j	
+D04E	024		jumpe		(CHANGE MEM)
+300A	025		load	loadit
+5002	026		add	ar
+5008	027		add	j	right value for ar[j-1]
+6004	028		sub	one
+402E	029		store	LATER so you can subit CHANGEMEM
+300D	02A		load	subit
+5002	02B		add	ar
+5008	02C		add	j	value for a[j]
+402F	02D		store	subit CHANGE MEM
+0000	02E	loadit	dw	value is 30AA
+0000	02F	subit	dw	value is 60AA subs ar[j-1] from ar[j]
+E04A	030		jmpl	xit	if>=jump to xit (CHG MEM)
+D04A	031		jumpe	xit	(CHANGE MEM)
+300A	032		load	loadit
+5002	033		add	ar
+5008	034		add	j
+4036	035		store	store into later
+0000	036	dw	0	accum = 3065
+400B	037		store	store into temp
+300A	038		load	loadit
+5002	039		add	ar
+5008	03A		add	j
+6004	03B		sub	one
+4041	03C		store	CHANGE MEM to loadit->ar[j-1]
+3005	03D		load	storit
+5008	03E		add	j
+5002	03F		add	ar
+4042	040		store	CHANGE MEM to storeit->a[j]
+0000	041	loadit	dw	loadit line for ar[j-1]
+0000	042	storit	dw	storit line for ar[j]
+3005	043		load	storit
+5008	044		add	j
+5002	045		add	ar
+6004	046		sub	one
+4049	047		store	store at later line
+300B	048		load	temp
+0000	049	storit		storit line for a[j-1]
+3008	04A	xit	load	j
+6004	04B		sub	one
+4008	04C		store	j
+C022	04D		jmp		jmp to second loop (CHG MEM)
+3001	04E	xit	load	i
+5004	04F		add	one
+4001	050		store	i
+3006	051		load	n
+6004	052		sub	1
+4008	053		store	j	sets j back to 9
+C01F	054		jmp		jmp to first loop  (CHG MEM)
+3003	055	xit	load	zero
+4001	056		store	i	set i to 0
+3006	057	loop	load	n	print loop
+6001	058		sub	i
+D064	059		jumpe		CHANGE MEM
+300A	05A		load	loadit
+5002	05B		add	ar	
+5001	05C		add	i	figure out right address
+405E	05D		store	doit	
+0000	05E	doit	dw	0
+1800	05F		printH
+3001	060		load	i
+5004	061		add	one
+4001	062		store	i
+C057	063		jmp	jump to beginning (CHANGE MEM)
+0000	064		halt
