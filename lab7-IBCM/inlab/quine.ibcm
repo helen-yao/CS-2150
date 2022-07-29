@@ -1,0 +1,22 @@
+C002	000		jmp	start	jump past i declaration
+0002	001	i	dw	0	int i
+3000	002		load		load 1st + 2nd lines to print indiv
+1800	003		printH
+3001	004		load
+1800	005		printH		
+C00A	006		jmp		jump to normal print loop
+0001	007	one	dw	1	const one
+0016	008	numL	dw	16	number of lines
+3000	009	mem	dw	3000	mem address
+3008	00A	loop	load	numL	check if it went thorugh all lines
+6001	00B		sub	i	subtract i
+D016	00C		jumpl	xit
+3009	00D		load 	mem	add mem to i
+5001	00E		add	i	
+4010	00F		store	loadit	stores load command into loadit
+0000	010		loadit		holds memory address
+1800	011		printH
+3001	012		load	i
+5007	013		add	one	
+4001	014		store	i
+C00A	015		jmp		go to beginning of loop
